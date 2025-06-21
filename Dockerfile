@@ -14,5 +14,5 @@ COPY . .
 # Exponer el puerto
 EXPOSE 8000
 
-# Comando para ejecutar la aplicación
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "app:app"]
+# Comando para ejecutar la aplicación con logs verbosos
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "120", "--log-level", "info", "app:app"]
