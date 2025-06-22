@@ -5,16 +5,25 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copiar archivos de dependencias
+# Copiar requirements primero para aprovechar cache de Docker
 COPY requirements.txt .
 
-# Instalar dependencias
+# Instalar dependencias de Python
+RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el código de la aplicación
+# Verificar que gunicorn se instaló
+RUN which gunicorn && gunicorn --version
+
+# Copiar el resto del código
 COPY . .
 
-# Exponer el puerto
+# Crear usuario no root
+RUN useradd --create-home --shell /bin/bash app
+RUN chown -R app:app /app
+USER app
+
+# Exponer puerto
 EXPOSE 8000
 
 # Comando para ejecutar la aplicación
