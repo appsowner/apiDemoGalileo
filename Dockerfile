@@ -2,17 +2,19 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copiar requirements primero para aprovechar cache de Docker
-COPY requirements.txt .
-
 # Instalar dependencias
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el código de la aplicación
-COPY . .
+# Copiar aplicación
+COPY app.py .
 
-# Exponer el puerto (EasyPanel puede cambiar esto)
-EXPOSE 5000
+# EasyPanel health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
 
-# Usar gunicorn que se adapta al puerto que asigne EasyPanel
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5000} --workers 4 app:app"]
+# Exponer puerto que EasyPanel espera
+EXPOSE 8080
+
+# Ejecutar en puerto 8080 (común en EasyPanel)
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "60", "app:app"]
