@@ -80,8 +80,8 @@ def generate():
     print(" final_output:",  final_output)
 
     galileo_logger.add_llm_span(
-        input=final_output,
-        output=output,
+        input=full_input,
+        output=final_output,
         model=model_prompt,
         duration_ns=end_time - start_time,
         num_input_tokens=input_tkn,
