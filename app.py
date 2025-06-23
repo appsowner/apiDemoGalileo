@@ -31,13 +31,16 @@ def generate():
     system_prompt = data.get('system_prompt', "You are a helpful assistant that answers succinctly.")  # valor por defecto
     user_prompt = data.get('prompt')
     output_prompt= data.get('output_prompt')
-
+    model_prompt =data.get('model_prompt')
+    print('model_prompt')
+    print(model_prompt)
     print('system prompt')
     print(system_prompt)
     print('user_prompt ')
     print(user_prompt)
     print('output_prompt')
     print(output_prompt)
+   
 
     
     messages = [
@@ -79,7 +82,7 @@ def generate():
     galileo_logger.add_llm_span(
         input=final_output,
         output=output,
-        model="gpt-4o",
+        model=model_prompt,
         duration_ns=end_time - start_time,
         num_input_tokens=input_tkn,
         num_output_tokens=completion_tkn,
