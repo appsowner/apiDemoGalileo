@@ -26,9 +26,13 @@ def health_check():
 @app.route('/generate', methods=['POST'])
 def generate():
     data = request.get_json()
+    print('---------------------')
+    print(data)
+    print('---------------------')
+
     system_prompt = data.get('system_prompt', "You are a helpful assistant that answers succinctly.")  # valor por defecto
     user_prompt = data.get('prompt')
-    output_prompt= data.get('output')
+    output_prompt= data.get('output_prompt')
 
     messages = [
         {"role": "system", "content": system_prompt},
