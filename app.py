@@ -61,8 +61,12 @@ def generate():
     print("Total tokens:", total_tkn)
 
 
+    final_output = output_prompt if output_prompt else output
+
+    print(" final_output:",  final_output)
+
     galileo_logger.add_llm_span(
-        input=full_input,
+        input=final_output,
         output=output,
         model="gpt-4o",
         duration_ns=end_time - start_time,
